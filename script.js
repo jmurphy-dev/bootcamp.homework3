@@ -1,7 +1,7 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
-//user parameters
+//Object containing user parameters
 
 var parameters = {
   //aquire password generation parameters
@@ -10,22 +10,34 @@ var parameters = {
 
     console.log(`Chosen length :: ${length}`);
 
-    do {
-      alert(`Invalid choice!`);
+    //Check for vaild input length
+    if(length < 8 || length > 128){
+      do {
+        alert(`Invalid choice!`);
 
-      length = prompt("Chose a password length between 8 and 128 characters");
+        length = prompt("Chose a password length between 8 and 128 characters");
 
-    } while((length < 8 || length > 128));
-
+      } while((length < 8 || length > 128));
+    }
   },
 
-  chooseDictionary: function() {}
+  chooseDictionary: function() {
+    do {
+      var allowUpper = confirm("Your password will contain upper case letters.");
+      var allowLower = confirm("Your password will contain lower case letters.");
+      var allowNums = confirm("Your password will numbers.");
+      var allowSymbols = confirm("Your password will symbols.");
+      
+    }while(!allowLower && !allowNums && !allowSymbols && !allowUpper);
+
+  }
   
 
 };
 
 
-//Arrays of characters
+//Object contaning functions that generate random characters
+
 var dictionary = {
   randUpper: function() {
     return String.fromCharCode(Math.floor(Math.random()*26)+65);
@@ -46,11 +58,13 @@ var dictionary = {
 // Generate password
 function generatePassword(dictionary, parameters) {
   parameters.passwordLength();
+  
   parameters.chooseDictionary();
+  
   var pw = '';
 
 
-  
+  return pw;
 }
 
 
