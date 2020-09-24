@@ -1,38 +1,49 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
+var userLength = "";
+var userChars = [];
+var allowUpper = true;
+var allowLower = true;
+var allowNums = true;
+var allowSymbols = true;
+
 
 //Object containing user parameters
 
 var parameters = {
   //aquire password generation parameters
   passwordLength: function()  {
-    var length = prompt("Chose a password length between 8 and 128 characters");
+    userLength = prompt("Chose a password length between 8 and 128 characters");
 
-    console.log(`Chosen length :: ${length}`);
+    console.log(`Chosen length :: ${userLength}`);
 
     //Check for vaild input length
-    if(length < 8 || length > 128){
+    if(userLength < 8 || userLength > 128){
       do {
         alert(`Invalid choice!`);
 
-        length = prompt("Chose a password length between 8 and 128 characters");
+        userLength = prompt("Chose a password length between 8 and 128 characters");
 
-      } while((length < 8 || length > 128));
+      } while(userLength < 8 || userLength > 128);
     }
+    parseInt(userLength);
   },
 
+  
   chooseDictionary: function() {
     do {
-      var allowUpper = confirm("Your password will contain upper case letters.");
-      var allowLower = confirm("Your password will contain lower case letters.");
-      var allowNums = confirm("Your password will numbers.");
-      var allowSymbols = confirm("Your password will symbols.");
-      
-    }while(!allowLower && !allowNums && !allowSymbols && !allowUpper);
+      allowUpper = confirm("Your password will contain upper case letters.");
+      allowLower = confirm("Your password will contain lower case letters.");
+      allowNums = confirm("Your password will contian numbers.");
+      allowSymbols = confirm("Your password will contain symbols.");
 
+    } while (!allowLower && !allowNums && !allowSymbols && !allowUpper);
+    
+    console.log(`Allow upper case -- ${allowUpper} 
+              \n Allow lower case -- ${allowLower}
+              \n Allow numbers -- ${allowNums}
+              \n Allow symbols -- ${allowSymbols}`);
   }
-  
-
 };
 
 
@@ -57,13 +68,38 @@ var dictionary = {
 
 // Generate password
 function generatePassword(dictionary, parameters) {
+  var pw = [];
   parameters.passwordLength();
-  
   parameters.chooseDictionary();
+  console.log(`This is the user length inside the generate fucntion -- ${userLength}`);
+
+  if(!allowLower) {
+    delete dictionary.randLower;
+  }
+  if(!allowNums) {
+    delete dictionary.randNum;
+  }
+  if(!allowUpper) {
+    delete dictionary.randUpper;
+  }
+  if(!allowSymbols) {
+    delete dictionary.randSymbol;
+  }
+
+  function pickRandomProperty(dictionary) {
+    var result;
+    var count = 0;
+    for (var prop in dictionary)
+        if (Math.random() < 1/++count)
+           result = prop;
+    return result;
+}
+
+  for(let i = 0; i < userLength; i++) {
+    pw.push(pickRandomProperty(dictionary));
+  }
   
-  var pw = '';
-
-
+  toString(pw);
   return pw;
 }
 
