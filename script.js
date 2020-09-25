@@ -6,10 +6,7 @@ var allowUpper = true;
 var allowLower = true;
 var allowNums = true;
 var allowSymbols = true;
-
-
 //Object containing user parameters
-
 var parameters = {
   //aquire password generation parameters
   passwordLength: function()  {
@@ -28,8 +25,6 @@ var parameters = {
     }
     parseInt(userLength);
   },
-
-  
   chooseDictionary: function() {
     do {
       allowUpper = confirm("Your password will contain upper case letters.");
@@ -45,10 +40,7 @@ var parameters = {
               \n Allow symbols -- ${allowSymbols}`);
   }
 };
-
-
 //Object contaning functions that generate random characters
-
 var dictionary = {
   randUpper: function() {
     return String.fromCharCode(Math.floor(Math.random()*26)+65);
@@ -64,15 +56,12 @@ var dictionary = {
     return symbol[Math.floor(Math.random()*symbol.length)];
   }
 };
-
-
 // Generate password
 function generatePassword(dictionary, parameters) {
   var pw = [];
   parameters.passwordLength();
   parameters.chooseDictionary();
   console.log(`This is the user length inside the generate fucntion -- ${userLength}`);
-
   if(!allowLower) {
     delete dictionary.randLower;
   }
@@ -85,26 +74,18 @@ function generatePassword(dictionary, parameters) {
   if(!allowSymbols) {
     delete dictionary.randSymbol;
   }
-
-  function pickRandomProperty(dictionary) {
-    var result;
-    var count = 0;
-    for (var prop in dictionary)
-        if (Math.random() < 1/++count)
-           result = prop;
-    return result;
-}
-
   for(let i = 0; i < userLength; i++) {
-    pw.push(pickRandomProperty(dictionary));
+    var randGenArr = Object.keys(dictionary);
+    var dictIndex = Math.floor(Math.random() * randGenArr.length);
+    var randKey = randGenArr[dictIndex];
+    var randValue = dictionary[randKey];
+    pw.push(randValue.call());
   }
-  
-  toString(pw);
-  return pw;
+  var pwStr = String(pw);
+  console.log(typeof(pwStr));
+  pwStr = pwStr.replace(/,/g, '');
+  return pwStr;
 }
-
-
-
 // Write password to the #password input
 function writePassword() {
   var password = generatePassword(dictionary, parameters);
